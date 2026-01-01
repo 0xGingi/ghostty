@@ -328,6 +328,10 @@ pub const Action = union(Key) {
     /// The readonly state of the surface has changed.
     readonly: Readonly,
 
+    /// Toggle focus between the game background and the terminal.
+    /// When game is focused, mouse events go to the WKWebView.
+    toggle_game_focus,
+
     /// Sync with: ghostty_action_tag_e
     pub const Key = enum(c_int) {
         quit,
@@ -393,6 +397,7 @@ pub const Action = union(Key) {
         search_total,
         search_selected,
         readonly,
+        toggle_game_focus,
     };
 
     /// Sync with: ghostty_action_u

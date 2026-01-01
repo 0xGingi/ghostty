@@ -418,6 +418,17 @@ extension Ghostty {
             return BackgroundBlur(fromCValue: v)
         }
 
+        /// URL for a game or web content to display as the terminal background.
+        var gameBackgroundUrl: URL? {
+            guard let config = self.config else { return nil }
+            var v: UnsafePointer<Int8>? = nil
+            let key = "game-background-url"
+            guard ghostty_config_get(config, &v, key, UInt(key.lengthOfBytes(using: .utf8))) else { return nil }
+            guard let ptr = v else { return nil }
+            let str = String(cString: ptr)
+            return URL(string: str)
+        }
+
         var unfocusedSplitOpacity: Double {
             guard let config = self.config else { return 1 }
             var opacity: Double = 0.85

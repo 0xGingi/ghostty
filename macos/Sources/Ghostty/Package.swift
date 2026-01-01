@@ -406,6 +406,9 @@ extension Notification.Name {
 
     /// Focus the search field
     static let ghosttySearchFocus = Notification.Name("com.mitchellh.ghostty.searchFocus")
+    
+    /// Toggle game background focus (mouse goes to game vs terminal)
+    static let ghosttyToggleGameFocus = Notification.Name("com.mitchellh.ghostty.toggleGameFocus")
 }
 
 // NOTE: I am moving all of these to Notification.Name extensions over time. This

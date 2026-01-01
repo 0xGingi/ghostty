@@ -5677,6 +5677,12 @@ pub fn performBindingAction(self: *Surface, action: input.Binding.Action) !bool 
             {},
         ),
 
+        .toggle_game_focus => return try self.rt_app.performAction(
+            .{ .surface = self },
+            .toggle_game_focus,
+            {},
+        ),
+
         .show_on_screen_keyboard => return try self.rt_app.performAction(
             .{ .surface = self },
             .show_on_screen_keyboard,

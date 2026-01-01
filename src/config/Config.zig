@@ -963,6 +963,20 @@ palette: Palette = .{},
 /// doing so.
 @"background-blur": BackgroundBlur = .false,
 
+/// URL for a game or web content to display as the terminal background.
+///
+/// When set, Ghostty will load the specified URL in a WKWebView behind
+/// the terminal surface. The terminal content is rendered on top with
+/// transparency (use `background-opacity` to control visibility).
+///
+/// Use the `toggle_game_focus` keybind action to switch mouse input
+/// between the terminal and the game background.
+///
+/// This is a fork-specific feature and only works on macOS.
+///
+/// Example: `game-background-url = https://example.com/game`
+@"game-background-url": ?[:0]const u8 = null,
+
 /// The opacity level (opposite of transparency) of an unfocused split.
 /// Unfocused splits by default are slightly faded out to make it easier to see
 /// which split is focused. To disable this feature, set this value to 1.

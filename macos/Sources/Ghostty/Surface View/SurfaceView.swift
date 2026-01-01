@@ -56,11 +56,40 @@ extension Ghostty {
         #endif
 
         @EnvironmentObject private var ghostty: Ghostty.App
+        
+        // State for game background focus (when true, mouse goes to game instead of terminal)
+        @State private var isGameFocused: Bool = false
 
         var body: some View {
             let center = NotificationCenter.default
 
             ZStack {
+                // Game background layer - brought to front when focused using zIndex
+                #if canImport(AppKit)
+                if let gameUrl = ghostty.config.gameBackgroundUrl {
+                    GameBackgroundView(url: gameUrl, isGameFocused: $isGameFocused)
+                        .zIndex(isGameFocused ? 1 : -1) // Bring to front when focused
+                        .allowsHitTesting(isGameFocused) // Only allow hit testing when focused
+                        .onReceive(center.publisher(for: .ghosttyToggleGameFocus)) { notification in
+                            // Toggle game focus state when we receive the notification
+                            Ghostty.logger.info("Received ghosttyToggleGameFocus notification")
+                            guard let surface = notification.object as? SurfaceView else {
+                                Ghostty.logger.warning("notification.object is not a SurfaceView")
+                                return
+                            }
+                            guard surface === surfaceView else {
+                                Ghostty.logger.warning("surface !== surfaceView")
+                                return
+                            }
+                            Ghostty.logger.info("Toggling game focus, was: \(isGameFocused)")
+                            isGameFocused.toggle()
+                        }
+                        .onAppear {
+                            Ghostty.logger.info("GameBackgroundView appeared with URL: \(gameUrl)")
+                        }
+                }
+                #endif
+                
                 // We use a GeometryReader to get the frame bounds so that our metal surface
                 // is up to date. See TerminalSurfaceView for why we don't use the NSView
                 // resize callback.

@@ -793,6 +793,16 @@ pub const Action = union(enum) {
     /// Only implemented on macOS.
     toggle_background_opacity,
 
+    /// Toggle focus between the game background and the terminal.
+    ///
+    /// When the game is focused, mouse events go to the WKWebView
+    /// instead of the terminal. This allows interaction with the game.
+    ///
+    /// This requires `game-background-url` to be set.
+    ///
+    /// Only implemented on macOS.
+    toggle_game_focus,
+
     /// Check for updates.
     ///
     /// Only implemented on macOS.
@@ -1324,6 +1334,7 @@ pub const Action = union(enum) {
             .toggle_mouse_reporting,
             .toggle_command_palette,
             .toggle_background_opacity,
+            .toggle_game_focus,
             .show_on_screen_keyboard,
             .reset_window_size,
             .activate_key_table,

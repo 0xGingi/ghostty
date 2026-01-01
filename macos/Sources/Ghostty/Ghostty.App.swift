@@ -600,6 +600,9 @@ extension Ghostty {
             case GHOSTTY_ACTION_READONLY:
                 setReadonly(app, target: target, v: action.action.readonly)
 
+            case GHOSTTY_ACTION_TOGGLE_GAME_FOCUS:
+                toggleGameFocus(app, target: target)
+
             case GHOSTTY_ACTION_CHECK_FOR_UPDATES:
                 checkForUpdates(app)
                 
@@ -1065,6 +1068,30 @@ extension Ghostty {
                     userInfo: [
                         SwiftUI.Notification.Name.ReadonlyKey: v == GHOSTTY_READONLY_ON,
                     ]
+                )
+
+            default:
+                assertionFailure()
+            }
+        }
+
+        /// Toggle focus between the game background and the terminal.
+        /// When game is focused, mouse events go to the WKWebView instead of the terminal.
+        private static func toggleGameFocus(
+            _ app: ghostty_app_t,
+            target: ghostty_target_s) {
+            switch (target.tag) {
+            case GHOSTTY_TARGET_APP:
+                Ghostty.logger.warning("toggle game focus does nothing with an app target")
+                return
+
+            case GHOSTTY_TARGET_SURFACE:
+                guard let surface = target.target.surface else { return }
+                guard let surfaceView = self.surfaceView(from: surface) else { return }
+                Ghostty.logger.info("toggleGameFocus: posting notification for surfaceView")
+                NotificationCenter.default.post(
+                    name: .ghosttyToggleGameFocus,
+                    object: surfaceView
                 )
 
             default:

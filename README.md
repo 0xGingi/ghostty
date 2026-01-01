@@ -19,6 +19,17 @@
   </p>
 </p>
 
+## Fork
+
+(MacOS only) - Allows you to load webpages via webkit in the background of the terminal (For things like idle games)
+
+config: 
+```
+game-background-url = https://tegridy.codeberg.page/neon-raiders/
+background-opacity = 0.7
+keybind = shift+g=toggle_game_focus
+```
+
 ## About
 
 Ghostty is a terminal emulator that differentiates itself by being
